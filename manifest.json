@@ -1,0 +1,20 @@
+{
+    "short_name": "Ambicare",
+    "name": "Ambicare",
+    "icons": [
+      {
+        "src": "https://cdn6.aptoide.com/imgs/7/8/4/78406afa1b8f695c16d0408cfe06f956_icon.png?w=240",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "https://cdn6.aptoide.com/imgs/7/8/4/78406afa1b8f695c16d0408cfe06f956_icon.png?w=240",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#3367D6",
+    "display": "standalone",
+    "theme_color": "#3367D6"
+  }

@@ -5,6 +5,8 @@ const exphbs = require('express-handlebars');
 //Initializing express
 const app = express();
 
+app.use(express.static('static'));
+
 //Handlebars middleware 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -12,6 +14,7 @@ app.set('view engine', 'handlebars');
 //Routes 
 app.use('/', require('./routes/users'));
 app.use('/driver', require('./routes/users'));
+
 
 
 //Port
