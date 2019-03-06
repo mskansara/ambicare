@@ -1,0 +1,26 @@
+{
+  "name": "ambicare",
+  "version": "1.0.0",
+  "description": "A Progressive Web App for online ambulance service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mskansara/ambicare.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mskansara/ambicare/issues"
+  },
+  "homepage": "https://github.com/mskansara/ambicare#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}
