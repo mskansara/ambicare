@@ -1,7 +1,7 @@
 //Registration of Service Worker
-global.navigator = {
-    userAgent: 'node.js'
-};
+// global.navigator = {
+//     userAgent: 'node.js'
+// };
 //Check if sw are supported
 if('serviceWorker' in navigator) {
     console.log('Service worker supported');

@@ -5,7 +5,7 @@ const exphbs = require('express-handlebars');
 //Initializing express
 const app = express();
 
-app.use(express.static('static'));
+app.use('/static',express.static('static'));
 
 //Handlebars middleware 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
