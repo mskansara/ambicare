@@ -12,8 +12,8 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 //Routes 
-app.use('/', require('./routes/users'));
-app.use('/driver', require('./routes/users'));
+app.use('/', require('./api/routes/users'));
+app.use('/driver', require('./api/routes/users'));
 
 
 

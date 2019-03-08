@@ -1,7 +1,6 @@
 //Routers for user eg: /login, /registration
 const express = require('express');
-// const manifest = require('../manifest.json');
-// const serviceworker = require('../static/service-worker.js');
+const user_controller = require('../controller/user_controller');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -15,5 +14,9 @@ router.get('/login', (req, res) => {
 router.get('/register', (req,res) => {
     res.render('register');
 });
+
+router.post('/login', user_controller.login);
+
+router.post('/register', user_controller.register);
 
 module.exports = router;
