@@ -1,4 +1,4 @@
-<h1>User Dashboard</h1>
+<h1>Driver Dashboard</h1>
 
 <div id="map" style="width:100%; height:550px;"></div>
     
@@ -7,11 +7,11 @@
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous">
 </script>
-{{!-- <script src="/socket.io/socket.io.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
 {{!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3JlCUb_DFK5_VT3Q0OtCK39HLJeLGinA&callback=initMap" async defer></script> --}}
 <script>
-    const latLng = [];
+    const latLng = {};
     $(document).ready(function () {
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
@@ -24,13 +24,16 @@
     function showPosition(position) {
         latLng.longitude = position.coords.longitude;
         latLng.latitude= position.coords.latitude;
+        console.log(latLng.latitude);
+        console.log(latLng.longitude);
+        
+
+        var socket = io();
+        socket.json.emit('location', latLng);
+        console.log(latLng);
         
     }
-    var socket = io();
-    socket.on('location', function(data){
-        
-        console.log(data);
-    });
+    
     /*
     function initMap() {
         var myLatlng = new google.maps.LatLng(latLng.latitude,latLng.longitude);

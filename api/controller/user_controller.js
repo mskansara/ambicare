@@ -1,5 +1,6 @@
-const user_model = require();
-const bcrypt = require('bcryptjs');
+// const user_model = require();
+const express = require('express');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
@@ -7,5 +8,5 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-    redirect('../views/login');
+    res.render('user/dashboard');
 }
