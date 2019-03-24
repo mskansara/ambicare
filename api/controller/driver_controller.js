@@ -1,5 +1,5 @@
 const driver_model = require('../model/Driver');
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
     }
     try {
         const hash = await bcrypt.hash(req.body.password, 10);
-        const new_driver = await driver_model.createUser(req.body.name, hash, req.body.email);
+        const new_driver = await driver_model.createDriver(req.body.name, hash, req.body.email);
         res.status(201).json({
             message: "Driver Registered"
         });
