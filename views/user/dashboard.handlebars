@@ -1,51 +1,101 @@
-<h1>User Dashboard</h1>
-
-<div id="map" style="width:100%; height:550px;"></div>
+<nav class="black">
+    <a href="#" class="brand-logo center">Ambicare</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+</nav>
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="../../static/images/user-profile-bg.jpg">
+      </div>
+      <a href="#user"><img class="circle" src="../../static/images/yuna.jpg"></a>
+      <a href="#name"><span class="white-text name">John Doe</span></a>
+      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+    </div></li>
+    <li><a href="#!">Booking History</a></li>
+    <li><a href="#!">Cancel Booking</a></li>
+    <li><div class="divider">Update Profile</div></li>
+    <li><a class="waves-effect" href="#!">Logout</a></li>
+</ul>
+  
+<div class="container" id="map" style="width:100%; height:80vh;">
     
-<script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-</script>
-{{!-- <script src="/socket.io/socket.io.js"></script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-{{!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3JlCUb_DFK5_VT3Q0OtCK39HLJeLGinA&callback=initMap" async defer></script> --}}
+</div>
+<hr>
+<center><div class="waves-effect waves-light btn black btn-med" v-on:click="sendUserDetails">Book Now</div></center>
+
+    
+    {{!-- Importing Vue JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    {{!-- Importing Socket.io --}}
+    {{!-- <script src="/socket.io/socket.io.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3JlCUb_DFK5_VT3Q0OtCK39HLJeLGinA"></script>
+
 <script>
-    const latLng = [];
-    $(document).ready(function () {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            userLatLng: {},
+            driverLatLng: {},
+            map,
+            socket: io()
+        },
+        mounted: function() {
+            if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(this.showPosition);
+            } else {
+                console.log("Geo Location not supported by browser");
+            }
             
-        } else {
-            console.log("Geo Location not supported by browser");
+            this.socket.on('location', function(data){
+                this.driverLatLng = data;
+                console.log(this.driverLatLng.latitude);
+                console.log(this.driverLatLng.longitude);
+                var marker = new google.maps.Marker({
+                    position: {lat: 19.44917, lng: 72.822598},
+                    map: this.map,
+                    title: 'Driver Location',
+                });
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Driver location',
+                    maxWidth: 200
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(this.map, marker);
+                });
+            });
+        },
+        methods: {
+            showPosition: function(position) {
+                this.userLatLng.latitude = position.coords.latitude;
+                this.userLatLng.longitude = position.coords.longitude;
+                this.map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 14,
+                    center: {lat: this.userLatLng.latitude, lng: this.userLatLng.longitude}
+                })
+                var marker = new google.maps.Marker({
+                    position: {lat: this.userLatLng.latitude, lng: this.userLatLng.longitude},
+                    map: this.map,
+                    title: 'Your Location',
+                });
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Your current location',
+                    maxWidth: 200
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(this.map, marker);
+                });
+                return;
+            },
+            sendUserDetails: function() {
+                this.socket.emit('user_details', 'Hello World');
+            }
         }
-    });
-    //function that retrieves the position
-    function showPosition(position) {
-        latLng.longitude = position.coords.longitude;
-        latLng.latitude= position.coords.latitude;
-        
-    }
-    var socket = io();
-    socket.on('location', function(data){
-        
-        console.log(data);
-    });
-    /*
-    function initMap() {
-        var myLatlng = new google.maps.LatLng(latLng.latitude,latLng.longitude);
-        //Map options
-        var options = {
-            zoom: 10,
-            center: {lat: latLng.latitude, lng: latLng.longitude}
-        };
-        //New map
-        var map = new google.maps.Map(document.getElementById('map'), options);
-        
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-        });
-        marker.setMap(map);
-    }*/
+    })
 </script>

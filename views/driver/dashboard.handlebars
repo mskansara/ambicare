@@ -1,7 +1,7 @@
 <h1>Driver Dashboard</h1>
 
 <div id="map" style="width:100%; height:550px;"></div>
-    
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -9,46 +9,39 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 
-{{!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3JlCUb_DFK5_VT3Q0OtCK39HLJeLGinA&callback=initMap" async defer></script> --}}
+{{!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> --}}
 <script>
-    const latLng = {};
-    $(document).ready(function () {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-            
-        } else {
-            console.log("Geo Location not supported by browser");
+    var app = new Vue({
+        el: "#app",
+        data: {
+            driverLatLng: {},
+            userDetails: {},
+            socket: io()
+        },
+        mounted: function() {
+            if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(this.showPosition);
+            } else {
+                console.log("Geo Location not supported by browser");
+            }
+            this.socket.on('user_details', function(data) {
+                console.log(data);
+                this.userDetails = data;
+                console.log(this.userDetails);
+            });
+        },
+        methods: {
+            emitLocation: function() {
+                this.socket.json.emit('location', this.driverLatLng);
+            },
+            showPosition: function(position) {
+                this.driverLatLng.latitude = position.coords.latitude;
+                this.driverLatLng.longitude = position.coords.longitude;
+                console.log(this.driverLatLng.latitude);
+                console.log(this.driverLatLng.longitude);
+                this.emitLocation();
+                return;
+            },
         }
     });
-    //function that retrieves the position
-    function showPosition(position) {
-        latLng.longitude = position.coords.longitude;
-        latLng.latitude= position.coords.latitude;
-        console.log(latLng.latitude);
-        console.log(latLng.longitude);
-        
-
-        var socket = io();
-        socket.json.emit('location', latLng);
-        console.log(latLng);
-        
-    }
-    
-    /*
-    function initMap() {
-        var myLatlng = new google.maps.LatLng(latLng.latitude,latLng.longitude);
-        //Map options
-        var options = {
-            zoom: 10,
-            center: {lat: latLng.latitude, lng: latLng.longitude}
-        };
-        //New map
-        var map = new google.maps.Map(document.getElementById('map'), options);
-        
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-        });
-        marker.setMap(map);
-    }*/
 </script>
