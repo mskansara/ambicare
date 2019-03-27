@@ -29,10 +29,9 @@ io.on('connection', (socket) => {
     socket.on('location', (data) => {
         io.emit('location', data);
     });
-});
-io.on('user_details', (socket) => {
     socket.on('user_details', (data) => {
         io.emit('user_details', data);
     });
 });
+
 
