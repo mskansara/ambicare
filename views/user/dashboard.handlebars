@@ -27,9 +27,8 @@
     {{!-- Importing Vue JS --}}
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     {{!-- Importing Socket.io --}}
-    {{!-- <script src="/socket.io/socket.io.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3JlCUb_DFK5_VT3Q0OtCK39HLJeLGinA"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Xyj--YZ3XsqPC3BTrDim9gX99VEruVg"></script> 
 
 <script>
     $(document).ready(function(){
@@ -38,13 +37,17 @@
 </script>
 
 <script>
+    Vue.config.delimiters = ['${', '}']
     var app = new Vue({
         el: '#app',
         data: {
             userLatLng: {},
             driverLatLng: {},
             map,
-            socket: io()
+            socket: io(),
+            user_socket: io(),
+            markers: [],
+            userDetails: {}
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -52,26 +55,35 @@
             } else {
                 console.log("Geo Location not supported by browser");
             }
-            
+            //Socket for listening driver's location
             this.socket.on('location', function(data){
                 this.driverLatLng = data;
-                console.log(this.driverLatLng.latitude);
-                console.log(this.driverLatLng.longitude);
-                var marker = new google.maps.Marker({
-                    position: {lat: 19.44917, lng: 72.822598},
-                    map: this.map,
-                    title: 'Driver Location',
-                });
-                var infowindow = new google.maps.InfoWindow({
-                    content: 'Driver location',
-                    maxWidth: 200
-                });
-                marker.addListener('click', function() {
-                    infowindow.open(this.map, marker);
-                });
+                var driver = {
+                    coords: {lat: this.driverLatLng.latitude, lng: this.driverLatLng.longitude},
+                    content: 'Driver location'
+                }
             });
         },
         methods: {
+            initMap: function() {},
+            addMarker: function(props) {
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                    map: this.map,
+                    title: 'Locations',
+                });
+
+                //Check content
+                if(props.content) {
+                    var infoWindow = new google.maps.InfoWindow({
+                        content:props.content
+                    });
+                    marker.addListener('click', function(){
+                        infoWindow.open(this.map, marker);
+                    });
+                }
+                return;
+            },
             showPosition: function(position) {
                 this.userLatLng.latitude = position.coords.latitude;
                 this.userLatLng.longitude = position.coords.longitude;
@@ -79,22 +91,38 @@
                     zoom: 14,
                     center: {lat: this.userLatLng.latitude, lng: this.userLatLng.longitude}
                 })
-                var marker = new google.maps.Marker({
-                    position: {lat: this.userLatLng.latitude, lng: this.userLatLng.longitude},
-                    map: this.map,
-                    title: 'Your Location',
-                });
-                var infowindow = new google.maps.InfoWindow({
+                this.markers = [
+                    {
+                        coords: {lat: 19.461171, lng: 72.813013},
+                        content: 'Your current location'
+                    },
+                    {
+                        coords: {lat: 19.4566757, lng: 72.8191789},
+                        content: 'Driver Location',
+                    }
+                ];
+                for(var i = 0; i < this.markers.length; i++){
+                    // Add marker
+                    this.addMarker(this.markers[i]);
+                    console.log(this.markers[i].coords);
+                }
+                /*var infowindow = new google.maps.InfoWindow({
                     content: 'Your current location',
                     maxWidth: 200
                 });
-                marker.addListener('click', function() {
-                    infowindow.open(this.map, marker);
-                });
+                this.markers[0].addListener('click', function() {
+                    infowindow.open(this.map, this.markers);
+                });*/
                 return;
             },
             sendUserDetails: function() {
-                this.socket.emit('user_details', 'Hello World');
+                this.userDetails = {
+                    name: "Manthan Kansara",
+                    email: "manthankansara7@gmail.com",
+                    phone: "8454044679",
+                    location: "Virar (East)"
+                }
+                this.socket.json.emit('user_details', this.userDetails);
             }
         }
     })

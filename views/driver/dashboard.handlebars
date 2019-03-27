@@ -1,22 +1,63 @@
-<h1>Driver Dashboard</h1>
-
-<div id="map" style="width:100%; height:550px;"></div>
+<nav class="black">
+    <a href="#" class="brand-logo center">Ambicare</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+</nav>
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="../../static/images/user-profile-bg.jpg">
+      </div>
+      <a href="#user"><img class="circle" src="../../static/images/yuna.jpg"></a>
+      <a href="#name"><span class="white-text name">John Doe</span></a>
+      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+    </div></li>
+    <li><a href="#!">Booking History</a></li>
+    <li><a href="#!">Cancel Booking</a></li>
+    <li><div class="divider">Update Profile</div></li>
+    <li><a class="waves-effect" href="#!">Logout</a></li>
+</ul>
+<div class="row">
+    <div class="col l10 m10 s10 offset-l1 offset-m1 offset-s1">
+        <h4 class="center">Current Booking</h4>
+        <div class="card card-content">
+            <div id="current_booking">
+                <h6>Name: \{{userDetails.name}}</h6>
+                <h6>Email ID: \{{userDetails.email}}</h6>
+                <h6>Phone: \{{userDetails.phone}}</h6>
+                <h6>Location: \{{userDetails.location}}</h6>
+                <hr>
+                &nbsp;&nbsp;<button class="btn blue">Accept</button>
+                
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>
 {{!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> --}}
 <script>
+    Vue.config.delimiters = ['${', '}']
     var app = new Vue({
         el: "#app",
         data: {
+            sample: "Hello World",
             driverLatLng: {},
-            userDetails: {},
-            socket: io()
+            userDetails: {
+                name: 'Manthan Kansara',
+                email: 'manthankansara7@gmail.com',
+                phone: '8454044679',
+                location: 'Virar (East)'
+            },
+            socket: io(),
+            user_socket: io(),
+            current_booking: false
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -24,8 +65,9 @@
             } else {
                 console.log("Geo Location not supported by browser");
             }
+
+            //Socket for listening user's details
             this.socket.on('user_details', function(data) {
-                console.log(data);
                 this.userDetails = data;
                 console.log(this.userDetails);
             });
