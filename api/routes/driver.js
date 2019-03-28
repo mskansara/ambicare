@@ -16,5 +16,8 @@ router.post('/login', driver_controller.login);
 
 router.post('/register', driver_controller.register);
 
+router.post('/subscribe', driver_controller.subscribe);
+
+router.get('/logout', driver_controller.logout);
 
 module.exports = router;

@@ -1,6 +1,7 @@
-<nav class="black">
+<nav class="blue">
     <a href="#" class="brand-logo center">Ambicare</a>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons show">menu</i></a>
+    <a class="waves-effect right" href="/logout"><i class="material-icons right">exit_to_app</i>Logout</a>
 </nav>
 <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
@@ -8,20 +9,20 @@
         <img src="../../static/images/user-profile-bg.jpg">
       </div>
       <a href="#user"><img class="circle" src="../../static/images/yuna.jpg"></a>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="#name"><span class="white-text name">\{{userDetails.name}}</span></a>
+      <a href="#email"><span class="white-text email">\{{userDetails.email}}</span></a>
     </div></li>
     <li><a href="#!">Booking History</a></li>
     <li><a href="#!">Cancel Booking</a></li>
     <li><div class="divider">Update Profile</div></li>
-    <li><a class="waves-effect" href="#!">Logout</a></li>
+    <li><a class="waves-effect" href="/logout">Logout</a></li>
 </ul>
   
 <div class="container" id="map" style="width:100%; height:80vh;">
     
 </div>
 <hr>
-<center><div class="waves-effect waves-light btn black btn-med" v-on:click="sendUserDetails">Book Now</div></center>
+<center><div class="waves-effect waves-light btn btn-med blue" style="border-radius:50px; width:50%" v-on:click="sendUserDetails">Book Now</div></center>
 
     
     {{!-- Importing Vue JS --}}
@@ -47,7 +48,13 @@
             socket: io(),
             user_socket: io(),
             markers: [],
-            userDetails: {}
+            userDetails: {
+                name: 'Brad Traversy',
+                email: 'brad@gmail.com',
+                phone: '8454044679',
+                location: 'Virar (East)'
+            },
+            userName: null
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -65,7 +72,6 @@
             });
         },
         methods: {
-            initMap: function() {},
             addMarker: function(props) {
                 var marker = new google.maps.Marker({
                     position: props.coords,

@@ -1,6 +1,7 @@
-<nav class="black">
+<nav class="blue">
     <a href="#" class="brand-logo center">Ambicare</a>
     <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <a class="waves-effect right" href="/driver/logout"><i class="material-icons right">exit_to_app</i>Logout</a>
 </nav>
 <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
@@ -8,28 +9,26 @@
         <img src="../../static/images/user-profile-bg.jpg">
       </div>
       <a href="#user"><img class="circle" src="../../static/images/yuna.jpg"></a>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="#name"><span class="white-text name">\{{driverDetails.name}}</span></a>
+      <a href="#email"><span class="white-text email">\{{driverDetails.email}}</span></a>
     </div></li>
     <li><a href="#!">Booking History</a></li>
     <li><a href="#!">Cancel Booking</a></li>
     <li><div class="divider">Update Profile</div></li>
-    <li><a class="waves-effect" href="#!">Logout</a></li>
+    <li><a class="waves-effect" href="/driver/logout">Logout</a></li>
 </ul>
 <div class="row">
     <div class="col l10 m10 s10 offset-l1 offset-m1 offset-s1">
         <h4 class="center">Current Booking</h4>
         <div class="card card-content">
-            <div id="current_booking">
+            <div id="current_booking" style="margin-left:10px; padding-top:10px; padding-bottom:10px; margin-right:10px">
                 <h6>Name: \{{userDetails.name}}</h6>
                 <h6>Email ID: \{{userDetails.email}}</h6>
                 <h6>Phone: \{{userDetails.phone}}</h6>
                 <h6>Location: \{{userDetails.location}}</h6>
                 <hr>
-                &nbsp;&nbsp;<button class="btn blue">Accept</button>
-                
+                <center><button onclick="send()" v-on:click="toggleCurrentBooking" class="btn blue" style="border-radius:50px; width:50%">Accept</button></center>
             </div>
-            <br>
         </div>
     </div>
 </div>
@@ -41,23 +40,29 @@
         $('.sidenav').sidenav();
     });
 </script>
+
 {{!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> --}}
 <script>
     Vue.config.delimiters = ['${', '}']
     var app = new Vue({
         el: "#app",
         data: {
+            driverDetails: {
+                name: 'Manthan Kansara',
+                email: 'manthan@gmail.com'
+            },
             sample: "Hello World",
             driverLatLng: {},
             userDetails: {
-                name: 'Manthan Kansara',
-                email: 'manthankansara7@gmail.com',
+                name: 'Brad Traversy',
+                email: 'brad@gmail.com',
                 phone: '8454044679',
                 location: 'Virar (East)'
             },
             socket: io(),
             user_socket: io(),
-            current_booking: false
+            current_booking: false,
+            showCurrentBooking: false
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -70,6 +75,7 @@
             this.socket.on('user_details', function(data) {
                 this.userDetails = data;
                 console.log(this.userDetails);
+                
             });
         },
         methods: {
@@ -84,6 +90,9 @@
                 this.emitLocation();
                 return;
             },
+            toggleCurrentBooking: function() {
+                this.showCurrentBooking = false;
+            }
         }
     });
 </script>
