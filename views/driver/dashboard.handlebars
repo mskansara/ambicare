@@ -25,9 +25,11 @@
                 <h6>Name: \{{userDetails.name}}</h6>
                 <h6>Email ID: \{{userDetails.email}}</h6>
                 <h6>Phone: \{{userDetails.phone}}</h6>
-                <h6>Location: \{{userDetails.location}}</h6>
+                <h6>Pick-Up Location: \{{userDetails.location}}</h6>
+                 <h6>Drop Location: \{{userDetails.dropLocation}}</h6>
                 <hr>
-                <center><button v-on:click="toggleCurrentBooking" class="btn blue" style="border-radius:50px; width:50%">Accept</button></center>
+                <center><button v-on:click="toggleCurrentBooking" class="btn blue" style="border-radius:50px; width:50%" v-if="notAccept">Accept</button></center>
+                <center><h6 v-if="accept">Accepted</h6></center>
             </div>
         </div>
     </div>
@@ -54,15 +56,20 @@
             sample: "Hello World",
             driverLatLng: {},
             userDetails: {
+                driver_name: 'Manthan Kansara',
+                driver_email: 'manthan@gmail.com',
                 name: 'Brad Traversy',
                 email: 'brad@gmail.com',
                 phone: '8454044679',
-                location: 'Virar (East)'
+                location: 'VIVA Institute of Technology Shirgaon, Veer Sawarkar road, Virar(East), Tal-Vasai Khalghar Chandansar Virar, Maharashtra 401303 India',
+                dropLocation: 'Sanjeevni Hospital'
             },
             socket: io(),
             user_socket: io(),
             current_booking: false,
-            showCurrentBooking: false
+            showCurrentBooking: false,
+            notAccept: true,
+            accept: false,
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -74,7 +81,7 @@
             //Socket for listening user's details
             this.socket.on('user_details', function(data) {
                 this.userDetails = data;
-                console.log(this.userDetails);
+                console.log(this.userDetails,);
                 
             });
         },
@@ -91,12 +98,22 @@
                 return;
             },
             toggleCurrentBooking: function() {
-                this.showCurrentBooking = false;
-                Swal.fire(
-                'Ambicare',
-                'Booking confirmed',
-                'success'
-                );
+                fetch ('/driver/booking', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.userDetails)
+                }).then((response) => {
+                    Swal.fire(
+                        'Ambicare',
+                        'Booking confirmed',
+                        'success'
+                    );
+                }).catch((response) => { console.log(response) });
+                this.notAccept = false;
+                this.accept = true;
             }
         }
     });

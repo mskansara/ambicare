@@ -79,8 +79,7 @@ exports.dashboard = async (req, res) => {
     }
     else{
         res.render('user/dashboard');
-    }
-    
+    }  
 }
 
 exports.logout = async (req, res) => {

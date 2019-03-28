@@ -18,22 +18,35 @@
     <li><a class="waves-effect" href="/logout">Logout</a></li>
 </ul>
   
-<div class="container" id="map" style="width:100%; height:80vh;">
-    
+<div class="container" id="map" style="width:100%; height:80vh;">   
 </div>
 <hr>
-<center><div class="waves-effect waves-light btn btn-med blue" style="border-radius:50px; width:50%" v-on:click="sendUserDetails">Book Now</div></center>
+<center><button data-target="modal1" id="book-btn" class="waves-effect waves-light btn btn-med blue modal-trigger" style="border-radius:50px; width:50%">Book Now</nutton></center>
 
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Enter the drop location</h4><br>
+      <div class="col l10 m12 s12 offset-l1">
+            <label for="drop">Drop Location</label>
+            <input type="text" name="drop" id="drop" class="form-control" v-model="dropLocation" placeholder="Enter drop location" required>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="center btn blue modal-close" style="border-radius:50px;" v-on:click="this.sendUserDetails">Book</a>
+    </div>
+</div>
     
     {{!-- Importing Vue JS --}}
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     {{!-- Importing Socket.io --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    {{!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEOphf1Hj5M_C_2byWwxQtwxGbGK0Ge3g"></script>  --}}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCstchpc2QSm1z_ev8ygKtafccXEwGY5sg"></script> 
 
 <script>
     $(document).ready(function(){
         $('.sidenav').sidenav();
+        $(".modal").modal();
     });
 </script>
 
@@ -52,9 +65,10 @@
                 name: 'Brad Traversy',
                 email: 'brad@gmail.com',
                 phone: '8454044679',
-                location: 'Virar (East)'
+                location: 'VIVA Institute of Technology Shirgaon, Veer Sawarkar road, Virar(East), Tal-Vasai Khalghar Chandansar Virar, Maharashtra 401303 India'
             },
-            userName: null
+            userName: null,
+            dropLocation: null
         },
         mounted: function() {
             if(navigator.geolocation) {
@@ -90,6 +104,8 @@
                 }
                 return;
             },
+            //TODO: Implement Distance Matrix API to find the nearest driver location
+            //TODO: Change the icon for driver location
             showPosition: function(position) {
                 this.userLatLng.latitude = position.coords.latitude;
                 this.userLatLng.longitude = position.coords.longitude;
@@ -99,7 +115,7 @@
                 })
                 this.markers = [
                     {
-                        coords: {lat: 19.461171, lng: 72.813013},
+                        coords: {lat: 19.474187, lng: 72.853139},
                         content: 'Your current location'
                     },
                     {
@@ -126,7 +142,8 @@
                     name: "Manthan Kansara",
                     email: "manthankansara7@gmail.com",
                     phone: "8454044679",
-                    location: "Virar (East)"
+                    pickupLocation: "Virar (East)",
+                    dropLocation: this.dropLocation
                 }
                 this.socket.json.emit('user_details', this.userDetails);
                 Swal.fire(
