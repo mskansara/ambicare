@@ -29,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     {{!-- Importing Socket.io --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Xyj--YZ3XsqPC3BTrDim9gX99VEruVg"></script> 
+    {{!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEOphf1Hj5M_C_2byWwxQtwxGbGK0Ge3g"></script>  --}}
 
 <script>
     $(document).ready(function(){
@@ -129,6 +129,11 @@
                     location: "Virar (East)"
                 }
                 this.socket.json.emit('user_details', this.userDetails);
+                Swal.fire(
+                'Ambicare',
+                'Request sent to the driver',
+                'success'
+                );
             }
         }
     })

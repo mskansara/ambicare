@@ -27,7 +27,7 @@
                 <h6>Phone: \{{userDetails.phone}}</h6>
                 <h6>Location: \{{userDetails.location}}</h6>
                 <hr>
-                <center><button onclick="send()" v-on:click="toggleCurrentBooking" class="btn blue" style="border-radius:50px; width:50%">Accept</button></center>
+                <center><button v-on:click="toggleCurrentBooking" class="btn blue" style="border-radius:50px; width:50%">Accept</button></center>
             </div>
         </div>
     </div>
@@ -92,6 +92,11 @@
             },
             toggleCurrentBooking: function() {
                 this.showCurrentBooking = false;
+                Swal.fire(
+                'Ambicare',
+                'Booking confirmed',
+                'success'
+                );
             }
         }
     });
