@@ -90,3 +90,7 @@ exports.logout = async (req, res) => {
     })
 }
 
+exports.viewBooking = async (req, res) => {
+    res.render('user/booking');
+}
+

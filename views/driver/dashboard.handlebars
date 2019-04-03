@@ -18,7 +18,7 @@
     <li><a class="waves-effect" href="/driver/logout">Logout</a></li>
 </ul>
 <div class="row">
-    <div class="col l10 m10 s10 offset-l1 offset-m1 offset-s1">
+    <div class="col l10 m10 s10 offset-l1 offset-m1 offset-s1" v-if="current_booking == true">
         <h4 class="center">Current Booking</h4>
         <div class="card card-content">
             <div id="current_booking" style="margin-left:10px; padding-top:10px; padding-bottom:10px; margin-right:10px">
@@ -48,10 +48,14 @@
     Vue.config.delimiters = ['${', '}']
     var app = new Vue({
         el: "#app",
+        computed: {
+            
+        },
         data: {
             driverDetails: {
                 name: 'Manthan Kansara',
-                email: 'manthan@gmail.com'
+                email: 'manthan@gmail.com',
+                phone: '8454044679'
             },
             sample: "Hello World",
             driverLatLng: {},
@@ -60,13 +64,13 @@
                 driver_email: 'manthan@gmail.com',
                 name: 'Brad Traversy',
                 email: 'brad@gmail.com',
-                phone: '8454044679',
+                phone: '9087654321',
                 location: 'VIVA Institute of Technology Shirgaon, Veer Sawarkar road, Virar(East), Tal-Vasai Khalghar Chandansar Virar, Maharashtra 401303 India',
                 dropLocation: 'Sanjeevni Hospital'
             },
             socket: io(),
             user_socket: io(),
-            current_booking: false,
+            current_booking: true,
             showCurrentBooking: false,
             notAccept: true,
             accept: false,
@@ -86,6 +90,10 @@
             });
         },
         methods: {
+            currentBooking: function(){
+                this.current_booking = true;
+                console.log(this.current_booking)
+            },
             emitLocation: function() {
                 this.socket.json.emit('location', this.driverLatLng);
             },
@@ -112,6 +120,7 @@
                         'success'
                     );
                 }).catch((response) => { console.log(response) });
+                this.socket.json.emit('driver_details', this.driverDetails);
                 this.notAccept = false;
                 this.accept = true;
             }

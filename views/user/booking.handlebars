@@ -1,0 +1,83 @@
+<nav class="blue">
+    <a href="#" class="brand-logo center">Ambicare</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons show">menu</i></a>
+    <a class="waves-effect right" href="/logout"><i class="material-icons right">exit_to_app</i>Logout</a>
+</nav>
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="../../static/images/user-profile-bg.jpg">
+      </div>
+      <a href="#user"><img class="circle" src="../../static/images/yuna.jpg"></a>
+      <a href="#name"><span class="white-text name">\{{userDetails.name}}</span></a>
+      <a href="#email"><span class="white-text email">\{{userDetails.email}}</span></a>
+    </div></li>
+    <li><a href="/view_booking">View Booking</a></li>
+    <li><a href="#!">Cancel Booking</a></li>
+    <li><div class="divider">Update Profile</div></li>
+    <li><a class="waves-effect" href="/logout">Logout</a></li>
+</ul>
+
+<div class="row">
+    <div class="col l10 m10 s10 offset-l1 offset-m1 offset-s1">
+        <h4 class="center">Booking Details</h4>
+        <div class="card card-content">
+            <div id="current_booking" style="margin-left:10px; padding-top:10px; padding-bottom:10px; margin-right:10px">
+                <h6>Driver Name: \{{driverDetails.name}}</h6>
+                <h6>Driver Email ID: \{{driverDetails.email}}</h6>
+                <h6>Driver Phone: \{{driverDetails.phone}}</h6>
+                <h6>Pick-Up Location: \{{userDetails.location}}</h6>
+                 <h6>Drop Location: \{{userDetails.dropLocation}}</h6>
+                 <hr>
+                 <center><button class="btn blue" style="border-radius:50px; width:50%">Cancel Booking</button></center>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    {{!-- Importing Socket.io --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+        $(".modal").modal();
+    });
+</script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            driverDetails: {
+               name: 'Manthan Kansara',
+               email: 'manthan@gmail.com',
+               phone: '8454044679'
+            },
+            userDetails: {
+                name: 'Brad Traversy',
+                email: 'brad@gmail.com',
+                phone: '8454044679',
+                location: 'VIVA Institute of Technology Shirgaon, Veer Sawarkar road, Virar(East), Tal-Vasai Khalghar Chandansar Virar, Maharashtra 401303 India',
+                dropLocation: 'Sanjeevni Hospital'
+            },    
+
+        },
+        mounted: function() {
+            
+            //Socket for listening driver's details
+                var socket = io();
+                socket.on('driver_details', function(data){
+                this.driverDetails = data;
+                console.log(this.driverDetails);
+            });
+        },
+        methods: {
+            
+
+        }
+    })
+</script>

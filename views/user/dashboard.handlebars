@@ -12,7 +12,7 @@
       <a href="#name"><span class="white-text name">\{{userDetails.name}}</span></a>
       <a href="#email"><span class="white-text email">\{{userDetails.email}}</span></a>
     </div></li>
-    <li><a href="#!">Booking History</a></li>
+    <li><a href="/view_booking">View Booking</a></li>
     <li><a href="#!">Cancel Booking</a></li>
     <li><div class="divider">Update Profile</div></li>
     <li><a class="waves-effect" href="/logout">Logout</a></li>
@@ -27,7 +27,11 @@
 <div id="modal1" class="modal">
     <div class="modal-content">
       <h4>Enter the drop location</h4><br>
-      <div class="col l10 m12 s12 offset-l1">
+        <div class="col l10 m12 s12 offset-l1">
+            <label for="drop">Pickup Location</label>
+            <input type="text" name="drop" id="drop" class="form-control" v-model="userDetails.location" placeholder="Enter drop location" required>
+        </div>
+        <div class="col l10 m12 s12 offset-l1">
             <label for="drop">Drop Location</label>
             <input type="text" name="drop" id="drop" class="form-control" v-model="dropLocation" placeholder="Enter drop location" required>
         </div>
@@ -41,7 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     {{!-- Importing Socket.io --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCstchpc2QSm1z_ev8ygKtafccXEwGY5sg"></script> 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmO9P5KIQozGxheHpxp_0oEA3yEuatQKU"></script> 
 
 <script>
     $(document).ready(function(){

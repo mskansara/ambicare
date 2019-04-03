@@ -23,5 +23,6 @@ router.get('/dashboard', user_controller.dashboard);
 
 router.get('/logout', user_controller.logout);
 
+router.get('/view_booking', user_controller.viewBooking);
 
 module.exports = router;

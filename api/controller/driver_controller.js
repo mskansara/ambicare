@@ -24,10 +24,10 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        let driver = await driver_model.getDriver(req.body.email);
+        /*let driver = await driver_model.getDriver(req.body.email);
         if (driver.length > 0) {
             //const result = (req.body.password, user[0].password);
-            //console.log(user[0].password);
+            console.log(user[0].password);
             if(req.body.password === driver[0].password) {
                 
                 const token = await jwt.sign(
@@ -40,8 +40,7 @@ exports.login = async (req, res) => {
                       expiresIn: "1h"
                     }
                 );
-                req.session.driverId = user[0].email;
-                console.log(req.session.driverId);
+                
 
                 // res.status(200).json({
                 //     message: 'Authentication successfully done.',
@@ -55,7 +54,8 @@ exports.login = async (req, res) => {
             }
         } else {
             res.redirect('/driver/login');
-        }
+        }*/
+        res.redirect('/driver/dashboard');
     } catch (err) {
         res.status(501).json({
             err

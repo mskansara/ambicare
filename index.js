@@ -50,6 +50,9 @@ io.on('connection', (socket) => {
     socket.on('user_details', (data) => {
         io.emit('user_details', data);
     });
+    socket.on('driver_details', (data) => {
+        io.emit('driver_details', data);
+    });
 });
 
 
