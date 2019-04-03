@@ -6,10 +6,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 const webpush = require("web-push");
-
-
 var app = express();
-
 
 exports.register = async (req, res) => {
     let user = await user_model.getUser(req.body.email);
@@ -35,10 +32,7 @@ exports.login = async (req, res) => {
     try {
         let user = await user_model.getUser(req.body.email);
         if (user.length > 0) {
-            //const result = (req.body.password, user[0].password);
-            //console.log(user[0].password);
             if(req.body.password === user[0].password) {
-                
                 const token = await jwt.sign(
                     {
                         name: user[0].name,
@@ -51,13 +45,6 @@ exports.login = async (req, res) => {
                 );
                 req.session.userId = user[0].email;
                 console.log(req.session.userId);
-
-                // res.status(200).json({
-                //     message: 'Authentication successfully done.',
-                //     name: user[0].name,
-                //     email: user[0].email,
-                //     token,
-                // });
                 res.redirect('/dashboard');
             } else {
                 res.redirect('/login');
@@ -70,7 +57,6 @@ exports.login = async (req, res) => {
             err
         });
     }
-
 }
 
 exports.dashboard = async (req, res) => {

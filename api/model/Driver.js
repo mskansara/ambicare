@@ -2,7 +2,6 @@
 let db = require('./db');
 const user_model = require('../model/User');
 
-
 exports.getDriver = async (email) => {
     try {
         let result = await db.query(
@@ -13,8 +12,6 @@ exports.getDriver = async (email) => {
         return err;
     }
 }
-
-
 exports.createDriver = async (name, password, email) => {
     try {
         let result = await db.query (
@@ -25,7 +22,6 @@ exports.createDriver = async (name, password, email) => {
         return err;
     }
 }
-
 exports.booking = async (userid, driverid, location, dropLocation) => {
     try {
         let result = await db.query (

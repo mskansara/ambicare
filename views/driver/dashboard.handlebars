@@ -45,7 +45,6 @@
 
 {{!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> --}}
 <script>
-    Vue.config.delimiters = ['${', '}']
     var app = new Vue({
         el: "#app",
         computed: {
@@ -55,7 +54,9 @@
             driverDetails: {
                 name: 'Manthan Kansara',
                 email: 'manthan@gmail.com',
-                phone: '8454044679'
+                phone: '8454044679',
+                lat,
+                lng
             },
             sample: "Hello World",
             driverLatLng: {},
@@ -81,12 +82,10 @@
             } else {
                 console.log("Geo Location not supported by browser");
             }
-
             //Socket for listening user's details
             this.socket.on('user_details', function(data) {
                 this.userDetails = data;
                 console.log(this.userDetails,);
-                
             });
         },
         methods: {

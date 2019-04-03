@@ -61,7 +61,6 @@ exports.login = async (req, res) => {
             err
         });
     }
-
 }
 
 exports.dashboard = async (req, res) => {

@@ -96,7 +96,6 @@
                     map: this.map,
                     title: 'Locations',
                 });
-
                 //Check content
                 if(props.content) {
                     var infoWindow = new google.maps.InfoWindow({
@@ -108,8 +107,6 @@
                 }
                 return;
             },
-            //TODO: Implement Distance Matrix API to find the nearest driver location
-            //TODO: Change the icon for driver location
             showPosition: function(position) {
                 this.userLatLng.latitude = position.coords.latitude;
                 this.userLatLng.longitude = position.coords.longitude;
@@ -132,13 +129,6 @@
                     this.addMarker(this.markers[i]);
                     console.log(this.markers[i].coords);
                 }
-                /*var infowindow = new google.maps.InfoWindow({
-                    content: 'Your current location',
-                    maxWidth: 200
-                });
-                this.markers[0].addListener('click', function() {
-                    infowindow.open(this.map, this.markers);
-                });*/
                 return;
             },
             sendUserDetails: function() {
