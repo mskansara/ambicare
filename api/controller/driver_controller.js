@@ -5,7 +5,10 @@ const jwt = require('jsonwebtoken');
 const webpush = require("web-push");
 
 exports.register = async (req, res) => {
+    
+    
     let driver = await driver_model.getDriver(req.body.email);
+
     if(driver.length >= 1) {
         return res.status(409).json({
             message: 'Driver already exists.'
@@ -14,7 +17,11 @@ exports.register = async (req, res) => {
     try {
         //const hash = await bcrypt.hash(req.body.password, 10);
         const new_driver = await driver_model.createDriver(req.body.name, req.body.password, req.body.email);
-        res.redirect('/driver/dashboard');
+        if(new_driver) {
+            res.redirect('driver/dashboard');
+            
+        }
+        
     } catch(err) {
         res.status(500).json({
             err
@@ -22,12 +29,14 @@ exports.register = async (req, res) => {
     }
 }
 
+
 exports.login = async (req, res) => {
     try {
-        /*let driver = await driver_model.getDriver(req.body.email);
+        
+        let driver = await driver_model.getDriver(req.body.email);
+        let email = driver[0].email;
         if (driver.length > 0) {
-            //const result = (req.body.password, user[0].password);
-            console.log(user[0].password);
+            
             if(req.body.password === driver[0].password) {
                 
                 const token = await jwt.sign(
@@ -35,27 +44,22 @@ exports.login = async (req, res) => {
                         name: driver[0].name,
                         email: driver[0].email
                     },
-                    process.env.JWT_KEY,
-                    {
-                      expiresIn: "1h"
-                    }
+                    process.env.JWT_KEY
                 );
+                console.log(token);
+                res.redirect('dashboard');
                 
-
-                // res.status(200).json({
-                //     message: 'Authentication successfully done.',
-                //     name: user[0].name,
-                //     email: user[0].email,
-                //     token,
-                // });
-                res.redirect('/driver/dashboard');
+                
             } else {
-                res.redirect('/driver/login');
+                res.status(401).json({
+                    message: 'Authentication Failed'
+                })
             }
         } else {
-            res.redirect('/driver/login');
-        }*/
-        res.redirect('/driver/dashboard');
+            res.status(401).json({
+                message: 'Authentication Failed'
+            })
+        }
     } catch (err) {
         res.status(501).json({
             err

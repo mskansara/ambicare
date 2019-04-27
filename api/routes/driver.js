@@ -24,4 +24,6 @@ router.get('/dashboard', driver_controller.dashboard);
 
 router.post('/booking', driver_controller.booking);
 
+
+
 module.exports = router;

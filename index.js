@@ -14,16 +14,14 @@ app.use(cookieParser());
 const SESS_NAME = 'session';
 
 app.use(session(
-    { 
+    {
         name: SESS_NAME,
-        secret: 'keyboard cat', 
-        cookie: {  
-            maxAge: null,
-            path: "/" 
-        },   
-    }
-)
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
 );
+
 
 //Port
 const PORT = process.env.PORT || 5000;

@@ -12,6 +12,17 @@ exports.getDriver = async (email) => {
         return err;
     }
 }
+
+exports.getDriverById = async (id) => {
+    try {
+        let result = await db.query(
+            'SELECT * FROM drivers WHERE id = ?', id
+        );
+        return result;
+    } catch(err) {
+        return err;
+    }
+}
 exports.createDriver = async (name, password, email) => {
     try {
         let result = await db.query (

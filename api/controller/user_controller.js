@@ -39,9 +39,6 @@ exports.login = async (req, res) => {
                         email: user[0].email
                     },
                     process.env.JWT_KEY,
-                    {
-                      expiresIn: "1h"
-                    }
                 );
                 req.session.userId = user[0].email;
                 console.log(req.session.userId);

@@ -2,19 +2,48 @@
     <div class="col l6 m10 s10 offset-l3 offset-m1 offset-s1">
         <h1 class="center"><i class="fa fa-ambulance" aria-hidden="true"></i></h1>
         <h2 class="center">Login</h2>
-        <form action="/driver/login" method="POST">
+        <form method="POST">
             <div class="col l10 m12 s12 offset-l1">
                 <label for="email">Email Id</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                <input type="email" name="email" id="email" class="form-control" v-model="$data.email" placeholder="Enter email" required>
             </div>
             <div class="col l10 m12 s12 offset-l1">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
+                <input type="password" name="password" id="password" class="form-control" v-model="$data.password" placeholder="Enter password" required>
             </div>
             <div class="center">
-                <input type="submit" name="login" id="login" class="btn blue" value="LOGIN" style="border-radius:50px; width:80%">
+                <button name="login" id="login" class="btn blue" style="border-radius:50px; width:80%" v-on:click="this.login">Login</button>
             </div>
         </form>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app = new Vue({
+        el: "#app",
+
+        data: {
+            email: "",
+            password: ""
+        },
+
+        methods: {
+            login: function() {
+                console.log(this.data)
+                fetch('/driver/login', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.data)
+                }).then((response) => {
+                    console.log("Authenticated");
+                }).catch((response) => { console.log(response) });
+            }
+        }
+    });
+</script>
+
 
